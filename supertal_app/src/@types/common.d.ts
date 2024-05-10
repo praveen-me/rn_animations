@@ -7,5 +7,5 @@ export interface IMovie {
 
 export interface IAppState {
   movies: IMovie[];
-  favouriteMovies: string[];
+  favouriteMovies: number[];
 }

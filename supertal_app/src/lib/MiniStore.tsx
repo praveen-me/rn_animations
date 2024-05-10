@@ -12,8 +12,13 @@ interface ISetMovies {
   payload: IMovie[];
 }
 
+interface ISetFavoruiteMovie {
+  type: 'SET_FAVOURITE_MOVIE';
+  payload: number;
+}
+
 // Define the reducer function to handle state updates
-type Action = ISetMovies | {type: 'DECREMENT'};
+type Action = ISetMovies | ISetFavoruiteMovie;
 
 export function setMovies(users: IMovie[]): ISetMovies {
   return {
@@ -22,10 +27,36 @@ export function setMovies(users: IMovie[]): ISetMovies {
   };
 }
 
+export function toggleFavouriteMovie(movieId: number): ISetFavoruiteMovie {
+  return {
+    type: 'SET_FAVOURITE_MOVIE',
+    payload: movieId,
+  };
+}
+
 const reducer = (state: IAppState, action: Action): IAppState => {
   switch (action.type) {
-    case 'SET_MOVIES_LIST':
+    case 'SET_MOVIES_LIST': {
       return {...state, movies: action.payload};
+    }
+
+    case 'SET_FAVOURITE_MOVIE': {
+      const {payload} = action;
+      const {favouriteMovies} = state;
+      const index = favouriteMovies.indexOf(payload);
+      let updatedFavouriteMovies = [];
+
+      if (index === -1) {
+        updatedFavouriteMovies = [...favouriteMovies, payload];
+      } else {
+        updatedFavouriteMovies = favouriteMovies.filter(id => id !== payload);
+      }
+
+      return {
+        ...state,
+        favouriteMovies: updatedFavouriteMovies,
+      };
+    }
 
     default:
       return state;
