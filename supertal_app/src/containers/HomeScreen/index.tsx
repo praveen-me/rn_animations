@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import {FlashList} from '@shopify/flash-list';
 import FastImage from 'react-native-fast-image';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+
 // import {useNavigation} from '@react-navigation/native';
 
 interface Movie {
@@ -54,6 +56,9 @@ const HomeScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
+      <Icon.Button name="facebook" solid>
+        Login with Facebook
+      </Icon.Button>
       <FlashList
         data={movies}
         renderItem={renderItem}

@@ -6,6 +6,9 @@
     "baseUrl": "./",
     "paths": {
       "@app/*": ["./*"]
-    }
+    },
+
+    "typeRoots": ["./node_modules/@types", "./src/@types"],
+    "types": ["node", "jest", "custom-types"]
   }
 }
