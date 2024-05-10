@@ -1,4 +1,5 @@
 // src/server.ts
+import "dotenv/config";
 import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
 import { Movie, Favorite, Comment } from "./src/models";
@@ -14,7 +15,7 @@ const findAllMovies = async (): Promise<Movie[]> => {
       name: "Inception",
       description:
         "A thief who steals corporate secrets through the use of dream-sharing technology.",
-      running_time: "2h 28m",
+      poster: "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
     },
   ];
 };
