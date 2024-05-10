@@ -1,10 +1,12 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import React from 'react';
+import React, {useEffect} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import HomeScreen from '@app/src/containers/HomeScreen';
 import FavoritesScreen from '@app/src/containers/FavoritesScreen';
+import {useMiniStore} from '@app/src/lib/MiniStore';
+import useActions from '@app/src/hooks/useActions';
 
 const Tab = createBottomTabNavigator();
 
@@ -33,6 +35,15 @@ function TabBarIcon({route, focused, color, size}: ITabBarIconProps) {
 }
 
 function RootNavigator(): JSX.Element {
+  const {state} = useMiniStore();
+  const {getAndSetAllMovies} = useActions();
+
+  useEffect(() => {
+    getAndSetAllMovies();
+  }, []);
+
+  console.log({state});
+
   return (
     <NavigationContainer>
       <Tab.Navigator

@@ -1,31 +1,31 @@
-import {IState, IUser} from '@app/src/@types/common';
 import React, {createContext, useReducer, useContext, ReactNode} from 'react';
+import {IAppState, IMovie} from '@app/src/@types/common';
 
 // Define the initial state of the store
-const initialState: IState = {
+const initialState: IAppState = {
   movies: [],
-  favourites: [],
+  favouriteMovies: [],
 };
 
-interface ISetUsers {
-  type: 'SET_USERS_LIST';
-  payload: IUser[];
+interface ISetMovies {
+  type: 'SET_MOVIES_LIST';
+  payload: IMovie[];
 }
 
 // Define the reducer function to handle state updates
-type Action = {type: 'SET_USERS_LIST'; payload: IUser[]} | {type: 'DECREMENT'};
+type Action = ISetMovies | {type: 'DECREMENT'};
 
-export function setUsers(users: IUser[]): ISetUsers {
+export function setMovies(users: IMovie[]): ISetMovies {
   return {
-    type: 'SET_USERS_LIST',
+    type: 'SET_MOVIES_LIST',
     payload: users,
   };
 }
 
-const reducer = (state: IState, action: Action): IState => {
+const reducer = (state: IAppState, action: Action): IAppState => {
   switch (action.type) {
-    case 'SET_USERS_LIST':
-      return {...state, users: action.payload};
+    case 'SET_MOVIES_LIST':
+      return {...state, movies: action.payload};
 
     default:
       return state;
@@ -34,7 +34,7 @@ const reducer = (state: IState, action: Action): IState => {
 
 // Create the context for the store
 const MiniStoreContext = createContext<
-  {state: IState; dispatch: React.Dispatch<Action>} | undefined
+  {state: IAppState; dispatch: React.Dispatch<Action>} | undefined
 >(undefined);
 
 interface MiniStoreProps {

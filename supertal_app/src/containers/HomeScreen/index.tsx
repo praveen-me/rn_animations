@@ -1,4 +1,3 @@
-// src/screens/HomeScreen.tsx
 import React from 'react';
 import {
   View,
@@ -9,58 +8,52 @@ import {
 } from 'react-native';
 import {FlashList} from '@shopify/flash-list';
 import FastImage from 'react-native-fast-image';
+import {useMiniStore} from '@app/src/lib/MiniStore';
+import {IMovie} from '@app/src/@types/common';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 // import {useNavigation} from '@react-navigation/native';
 
-interface Movie {
-  id: number;
-  name: string;
-  thumbnailUrl: string;
-}
-
-const movies: Movie[] = [
-  {
-    id: 1,
-    name: 'Inception',
-    thumbnailUrl: 'https://example.com/inception.jpg',
-  },
-  {
-    id: 2,
-    name: 'Interstellar',
-    thumbnailUrl: 'https://example.com/interstellar.jpg',
-  },
-];
-
 const HomeScreen: React.FC = () => {
-  // const navigation = useNavigation();
+  const {state} = useMiniStore();
   const screenWidth = Dimensions.get('window').width;
 
-  const renderItem = ({item}: {item: Movie}) => (
-    <TouchableOpacity
-      style={styles.movieItem}
-      onPress={() => {
-        // navigation.navigate('MovieDetailScreen', {movieId: item.id})
-      }}>
-      <FastImage
-        style={styles.image}
-        source={{
-          uri: item.thumbnailUrl,
-          priority: FastImage.priority.normal,
-        }}
-        resizeMode={FastImage.resizeMode.cover}
-      />
-      <Text style={styles.movieName}>{item.name}</Text>
-    </TouchableOpacity>
-  );
+  const renderItem = ({item}: {item: IMovie}) => {
+    // const isFavorite = favorites.includes(item.id); // Assuming 'favorites' is part of your state
+    const handlePressFavorite = () => {
+      // if (isFavorite) {
+      //   dispatch({type: 'REMOVE_FROM_FAVORITES', payload: item.id});
+      // } else {
+      //   dispatch({type: 'ADD_TO_FAVORITES', payload: item.id});
+      // }
+    };
+
+    return (
+      <View style={styles.movieItem}>
+        <TouchableOpacity onPress={() => {}} style={styles.movieContent}>
+          <FastImage
+            style={styles.image}
+            source={{
+              uri: item.poster,
+              priority: FastImage.priority.normal,
+            }}
+            resizeMode={FastImage.resizeMode.cover}
+          />
+          <Text style={styles.movieName}>{item.name}</Text>
+          <TouchableOpacity
+            onPress={handlePressFavorite}
+            style={styles.favoriteButton}>
+            <Icon name={'heart'} size={24} color={'red'} />
+          </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
+    );
+  };
 
   return (
     <View style={styles.container}>
-      <Icon.Button name="facebook" solid>
-        Login with Facebook
-      </Icon.Button>
       <FlashList
-        data={movies}
+        data={state.movies}
         renderItem={renderItem}
         keyExtractor={item => item.id.toString()}
         numColumns={2}
@@ -105,6 +98,15 @@ const styles = StyleSheet.create({
   },
   columnWrapper: {
     justifyContent: 'space-between',
+  },
+  favoriteButton: {
+    padding: 10,
+    alignItems: 'center',
+  },
+  movieContent: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    flexShrink: 1,
   },
 });
 
