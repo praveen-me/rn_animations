@@ -1,8 +1,9 @@
 import axios from "axios";
+import { MovieResponse } from "src/@types";
 
-const API_KEY = process.env.API_KEY;
+const API_KEY = process.env.MOVIE_DB_API_KEY;
 
-async function fetchMoviesFromTMDB() {
+async function seedMovies() {
   try {
     const response = await axios.get(
       "https://api.themoviedb.org/3/movie/popular",
@@ -13,8 +14,7 @@ async function fetchMoviesFromTMDB() {
       }
     );
 
-    const movies = response.data.results;
-    // Process the movies data here
+    const movies: MovieResponse[] = response.data.results;
 
     return movies;
   } catch (error) {
@@ -22,3 +22,5 @@ async function fetchMoviesFromTMDB() {
     throw error;
   }
 }
+
+export default seedMovies;

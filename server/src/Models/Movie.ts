@@ -1,7 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 import dbConnection from "../db";
 
-export class Movie extends Model {
+class Movie extends Model {
   public id!: number;
   public name!: string;
   public description!: string;
@@ -30,6 +30,9 @@ Movie.init(
   },
   {
     tableName: "movies",
-    sequelize: dbConnection, // passing the `sequelize` instance is required
+    sequelize: dbConnection,
+    timestamps: false,
   }
 );
+
+export default Movie;

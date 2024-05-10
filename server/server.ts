@@ -1,50 +1,18 @@
 // src/server.ts
-import "dotenv/config";
-import express, { Request, Response } from "express";
+import dotenv from "dotenv";
+dotenv.config();
+
+import express from "express";
 import bodyParser from "body-parser";
-import { Movie, Favorite, Comment } from "./src/models";
+import morgan from "morgan";
+
+import movieRouter from "./src/routers/movies";
 
 const app = express();
 app.use(bodyParser.json());
 
-// Assume these are imported from a service layer
-const findAllMovies = async (): Promise<Movie[]> => {
-  return [
-    {
-      id: 1,
-      name: "Inception",
-      description:
-        "A thief who steals corporate secrets through the use of dream-sharing technology.",
-      poster: "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
-    },
-  ];
-};
-const createFavorite = async (favorite: Favorite) => favorite;
-const deleteFavorite = async (id: number) => {};
-const createComment = async (comment: Comment) => comment;
+app.use(morgan("dev"));
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello World!");
-});
-
-app.get("/movies", async (req: Request, res: Response) => {
-  const movies = await findAllMovies();
-  res.json(movies);
-});
-
-app.post("/movies/favorites", async (req: Request, res: Response) => {
-  const favorite = await createFavorite(req.body);
-  res.status(201).json(favorite);
-});
-
-app.delete("/movies/favorites/:id", async (req: Request, res: Response) => {
-  await deleteFavorite(parseInt(req.params.id));
-  res.status(204).send();
-});
-
-app.post("/movies/comments", async (req: Request, res: Response) => {
-  const comment = await createComment(req.body);
-  res.status(201).json(comment);
-});
+app.use("/api", movieRouter);
 
 app.listen(3000, () => console.log("Server running on http://localhost:3000"));
