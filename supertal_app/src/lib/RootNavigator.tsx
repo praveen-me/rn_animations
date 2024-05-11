@@ -93,8 +93,6 @@ function RootNavigator(): JSX.Element {
     getAndSetAllMovies();
   }, []);
 
-  console.log({state});
-
   return (
     <NavigationContainer>
       <Tab.Navigator

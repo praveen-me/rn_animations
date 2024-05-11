@@ -1,10 +1,11 @@
 import React, {createContext, useReducer, useContext, ReactNode} from 'react';
-import {IAppState, IMovie} from '@app/src/@types/common';
+import {IAppState, IComment, IMovie} from '@app/src/@types/common';
 
 // Define the initial state of the store
 const initialState: IAppState = {
   movies: [],
   favouriteMovies: [],
+  comments: {},
 };
 
 interface ISetMovies {
@@ -17,8 +18,16 @@ interface ISetFavoruiteMovie {
   payload: number;
 }
 
+interface ISetAllComments {
+  type: 'SET_ALL_COMMENTS';
+  payload: {
+    comments: IComment[];
+    movieId: number;
+  };
+}
+
 // Define the reducer function to handle state updates
-type Action = ISetMovies | ISetFavoruiteMovie;
+type Action = ISetMovies | ISetFavoruiteMovie | ISetAllComments;
 
 export function setMovies(users: IMovie[]): ISetMovies {
   return {
@@ -31,6 +40,19 @@ export function toggleFavouriteMovie(movieId: number): ISetFavoruiteMovie {
   return {
     type: 'SET_FAVOURITE_MOVIE',
     payload: movieId,
+  };
+}
+
+export function setAllComments(
+  comments: IComment[],
+  movieId: number,
+): ISetAllComments {
+  return {
+    type: 'SET_ALL_COMMENTS',
+    payload: {
+      comments,
+      movieId,
+    },
   };
 }
 
@@ -55,6 +77,17 @@ const reducer = (state: IAppState, action: Action): IAppState => {
       return {
         ...state,
         favouriteMovies: updatedFavouriteMovies,
+      };
+    }
+
+    case 'SET_ALL_COMMENTS': {
+      const {comments, movieId} = action.payload;
+      return {
+        ...state,
+        comments: {
+          ...state.comments,
+          [movieId]: comments,
+        },
       };
     }
 
