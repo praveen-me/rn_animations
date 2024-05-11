@@ -14,17 +14,25 @@ Comment.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    movieId: {
+    movie_id: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
     },
-    content: {
+    comment: {
       type: new DataTypes.STRING(1024),
       allowNull: false,
+    },
+    timestamp: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
   },
   {
     tableName: "comments",
-    sequelize: dbConnection, // passing the `sequelize` instance is required
+    sequelize: dbConnection,
+    timestamps: false,
   }
 );
+
+export default Comment;
