@@ -41,7 +41,16 @@ const MovieDetailScreen: React.FC<IMovieDetailScreenProps> = props => {
     [state.movies, movieId],
   );
 
-  const renderHeader = () => movie && <TopSection movie={movie} />;
+  const renderHeader = () => (
+    <>
+      <TouchableOpacity
+        onPress={() => props.navigation.goBack()}
+        style={{paddingVertical: 10}}>
+        <Icon name="arrow-left" size={20} color="black" />
+      </TouchableOpacity>
+      {movie && <TopSection movie={movie} />}
+    </>
+  );
 
   const comments = useMemo(() => {
     return movieId ? state.comments[movieId] : [];
