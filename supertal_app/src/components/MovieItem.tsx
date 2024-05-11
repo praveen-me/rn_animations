@@ -5,6 +5,7 @@ import {IMovie} from '@app/src/@types/common';
 import Icon from 'react-native-vector-icons/Ionicons';
 import useActions from '@app/src/hooks/useActions';
 import {useMiniStore} from '@app/src/lib/MiniStore';
+import {useNavigation} from '@react-navigation/native';
 
 interface IMovieProps {
   movie: IMovie;
@@ -13,6 +14,7 @@ interface IMovieProps {
 export default function MovieItem({movie}: IMovieProps) {
   const {toggleMovieFromFavorites} = useActions();
   const {state} = useMiniStore();
+  const navigation = useNavigation();
 
   const handlePressFavorite = () => {
     toggleMovieFromFavorites(movie.id);
@@ -26,7 +28,11 @@ export default function MovieItem({movie}: IMovieProps) {
 
   return (
     <View style={styles.movieItem}>
-      <TouchableOpacity onPress={() => {}} style={styles.movieContent}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('MovieDetail', {movieId: movie.id});
+        }}
+        style={styles.movieContent}>
         <FastImage
           style={styles.image}
           source={{
