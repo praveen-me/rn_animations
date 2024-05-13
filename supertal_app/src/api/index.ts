@@ -14,7 +14,7 @@ class ApiClient implements IApiClient {
 
   constructor(url: string | undefined) {
     this.axiosInstance = axios.create({
-      baseURL: url,
+      baseURL: url + '/api',
       headers: {
         'Content-Type': 'application/json',
       },
