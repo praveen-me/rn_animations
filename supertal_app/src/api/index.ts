@@ -14,11 +14,13 @@ class ApiClient implements IApiClient {
 
   constructor(url: string | undefined) {
     this.axiosInstance = axios.create({
-      baseURL: url + '/api',
+      baseURL: 'http://192.0.0.2:3000' + '/api',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
     });
+    // console.log(this.axiosInstance.defaults);
   }
 
   async get(path: string): Promise<any> {
@@ -26,7 +28,8 @@ class ApiClient implements IApiClient {
       const response: AxiosResponse = await this.axiosInstance.get(path);
       return response.data;
     } catch (error) {
-      console.error('An error occurred:', error);
+      console.log(JSON.stringify(error), 'error');
+      // console.error('An error occurred:', error);
       throw error;
     }
   }
