@@ -1,10 +1,15 @@
 import { Sequelize } from "sequelize";
 
-const dbConnection = new Sequelize("supertal", "supertal", "supertal", {
-  host: "localhost",
-  dialect: "postgres",
-  logging: true,
-});
+const dbConnection = new Sequelize(
+  process.env.POSTGRES_DB as string,
+  process.env.POSTGRES_USER as string,
+  process.env.POSTGRES_PASSWORD as string,
+  {
+    host: "localhost",
+    dialect: "postgres",
+    logging: true,
+  }
+);
 
 dbConnection
   .authenticate()

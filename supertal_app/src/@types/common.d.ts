@@ -15,4 +15,5 @@ export interface IAppState {
   movies: IMovie[];
   favouriteMovies: number[];
   comments: {[key: string]: IComment[]};
+  isLoading: boolean;
 }

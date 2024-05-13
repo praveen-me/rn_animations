@@ -15,10 +15,6 @@ function App(): React.JSX.Element {
   return (
     <MiniStore>
       <SafeAreaView style={{flex: 1}}>
-        {/* <StatusBar />
-      <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <HomeScreen />
-      </ScrollView> */}
         <RootNavigator />
       </SafeAreaView>
     </MiniStore>

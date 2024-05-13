@@ -6,6 +6,7 @@ const initialState: IAppState = {
   movies: [],
   favouriteMovies: [],
   comments: {},
+  isLoading: false,
 };
 
 interface ISetMovies {
@@ -25,9 +26,16 @@ interface ISetAllComments {
     movieId: number;
   };
 }
+interface IToggleLoading {
+  type: 'TOGGLE_LOADING';
+}
 
 // Define the reducer function to handle state updates
-type Action = ISetMovies | ISetFavoruiteMovie | ISetAllComments;
+type Action =
+  | ISetMovies
+  | ISetFavoruiteMovie
+  | ISetAllComments
+  | IToggleLoading;
 
 export function setMovies(users: IMovie[]): ISetMovies {
   return {
@@ -53,6 +61,12 @@ export function setAllComments(
       comments,
       movieId,
     },
+  };
+}
+
+export function toggleLoading(): IToggleLoading {
+  return {
+    type: 'TOGGLE_LOADING',
   };
 }
 
@@ -88,6 +102,13 @@ const reducer = (state: IAppState, action: Action): IAppState => {
           ...state.comments,
           [movieId]: comments,
         },
+      };
+    }
+
+    case 'TOGGLE_LOADING': {
+      return {
+        ...state,
+        isLoading: !state.isLoading,
       };
     }
 

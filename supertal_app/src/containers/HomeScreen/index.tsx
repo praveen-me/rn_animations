@@ -7,8 +7,6 @@ import {IMovie} from '@app/src/@types/common';
 
 import MovieItem from '@app/src/components/MovieItem';
 
-// import {useNavigation} from '@react-navigation/native';
-
 const HomeScreen: React.FC = () => {
   const {state} = useMiniStore();
   const screenWidth = Dimensions.get('window').width;

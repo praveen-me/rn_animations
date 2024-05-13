@@ -10,6 +10,7 @@ import {
   useMiniStore,
   toggleFavouriteMovie,
   setAllComments,
+  toggleLoading,
 } from '@app/src/lib/MiniStore';
 
 function useActions() {
@@ -17,10 +18,16 @@ function useActions() {
 
   async function getAndSetAllMovies() {
     try {
+      toggleGlobalLoader();
+
       const allMovies = await getAllMovies();
 
       allMovies.length && dispatch(setMovies(allMovies));
-    } catch (e) {}
+    } catch (e) {
+      throw new Error(e.message || 'Failed to fetch movies');
+    } finally {
+      toggleGlobalLoader();
+    }
   }
 
   function toggleMovieFromFavorites(id: number) {
@@ -28,9 +35,6 @@ function useActions() {
   }
 
   async function getAndSetAllMoviesComments(movieId: number) {
-    // Fetch all movies from the API
-    // and set them in the store
-
     try {
       const comments: IComment[] = await getAllMovieComments(movieId);
 
@@ -40,18 +44,30 @@ function useActions() {
 
   async function addCommentToMovie(comment: string, movieId: number) {
     try {
+      toggleGlobalLoader();
       await addMovieComment(movieId, comment);
 
       await getAndSetAllMoviesComments(movieId);
-    } catch (e) {}
+    } catch (e) {
+    } finally {
+      toggleGlobalLoader();
+    }
   }
 
   async function deleteCommentFromMovie(commentId: number, movieId: number) {
     try {
+      toggleGlobalLoader();
       await deleteMovieComment(movieId, commentId);
 
       await getAndSetAllMoviesComments(movieId);
-    } catch (e) {}
+    } catch (e) {
+    } finally {
+      toggleGlobalLoader();
+    }
+  }
+
+  function toggleGlobalLoader() {
+    dispatch(toggleLoading());
   }
 
   return {
@@ -60,6 +76,7 @@ function useActions() {
     getAndSetAllMoviesComments,
     addCommentToMovie,
     deleteCommentFromMovie,
+    toggleGlobalLoader,
   };
 }
 

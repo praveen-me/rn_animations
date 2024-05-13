@@ -10,8 +10,8 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import HomeScreen from '@app/src/containers/HomeScreen';
 import FavoritesScreen from '@app/src/containers/FavoritesScreen';
 import MovieDetailScreen from '@app/src/containers/MovieDetailScreen';
-import {useMiniStore} from '@app/src/lib/MiniStore';
 import useActions from '@app/src/hooks/useActions';
+import FullScreenLoader from '@app/src/components/FullScreenLoader';
 
 export type HomeStackParamList = {
   HomeScreen: undefined;
@@ -86,7 +86,6 @@ function FavoritesStack() {
 }
 
 function RootNavigator(): JSX.Element {
-  const {state} = useMiniStore();
   const {getAndSetAllMovies} = useActions();
 
   useEffect(() => {
@@ -94,24 +93,28 @@ function RootNavigator(): JSX.Element {
   }, []);
 
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={({route}) => ({
-          // eslint-disable-next-line react/no-unstable-nested-components
-          tabBarIcon: ({focused, color, size}) => (
-            <TabBarIcon
-              route={route}
-              focused={focused}
-              color={color}
-              size={size}
-            />
-          ),
-          headerShown: false,
-        })}>
-        <Tab.Screen name="Home" component={HomeStack} />
-        <Tab.Screen name="Favorites" component={FavoritesStack} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <>
+      <NavigationContainer>
+        <Tab.Navigator
+          screenOptions={({route}) => ({
+            // eslint-disable-next-line react/no-unstable-nested-components
+            tabBarIcon: ({focused, color, size}) => (
+              <TabBarIcon
+                route={route}
+                focused={focused}
+                color={color}
+                size={size}
+              />
+            ),
+            headerShown: false,
+          })}>
+          <Tab.Screen name="Home" component={HomeStack} />
+          <Tab.Screen name="Favorites" component={FavoritesStack} />
+        </Tab.Navigator>
+      </NavigationContainer>
+
+      <FullScreenLoader />
+    </>
   );
 }
 
