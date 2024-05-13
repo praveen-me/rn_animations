@@ -18,3 +18,4 @@ What things you need to install the software and how to start this project succe
 
 - Make sure postgress is installed. (Protip: Use docker `docker pull postgres && cd server && docker-compose up -d` )
 - Nodejs should be >= 18
+- Use Yarn. To install yarn run gst`npm i -g yarn`
