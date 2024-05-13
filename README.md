@@ -17,5 +17,6 @@
 What things you need to install the software and how to start this project successfully.
 
 - Make sure postgress is installed. (Protip: Use docker `docker pull postgres && cd server && docker-compose up -d` )
+- Once DB is connected make sure to populate the tables. To do this run `psql -U supertal -d supertal -f server/sql/schema.sql`
 - Nodejs should be >= 18
 - Use Yarn. To install yarn run gst`npm i -g yarn`
