@@ -10,7 +10,7 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { MotiView } from "moti";
-
+import randomColor from "randomcolor";
 const { width } = Dimensions.get("window");
 
 const dialpad = [1, 2, 3, 4, 5, 6, 7, 8, 9, "", 0, "del"];
@@ -24,6 +24,16 @@ const pinContainerSize = width / 2;
 const pinSpacing = 10;
 const pinMaxSize = pinContainerSize / pinLength;
 const pinSize = pinMaxSize - pinSpacing * 2;
+
+const primaryColor = randomColor();
+
+const _colors = {
+  primary: primaryColor,
+  secondaryColor: randomColor({
+    hue: primaryColor,
+    luminosity: "dark",
+  }),
+};
 
 interface IDialPadProps {
   onPress: (item: (typeof dialpad)[number]) => void;
@@ -50,7 +60,7 @@ function DialPad(props: IDialPadProps) {
               <Ionicons
                 name="backspace-outline"
                 size={dialPadTextSize}
-                color={"black"}
+                color={_colors.secondaryColor}
               />
             ) : (
               <Text style={styles.dialPadText}>{item}</Text>
@@ -95,12 +105,12 @@ export default function DialPadContainer() {
               width: pinSize,
               height: pinSize,
               borderRadius: pinSize,
-              backgroundColor: "red",
+              backgroundColor: _colors.secondaryColor,
             }}
             animate={{
               height: code[i] ? pinSize : 2,
             }}
-            transition={{ type: "timing", duration: 300 }}
+            transition={{ type: "timing", duration: 200 }}
           />
         ))}
       </View>
@@ -114,16 +124,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flex: 1,
+    backgroundColor: _colors.primary,
   },
   dialBtn: {
     width: dialPadSize,
     height: dialPadSize,
     justifyContent: "center",
     alignItems: "center",
-    borderColor: "black",
+    borderColor: _colors.secondaryColor,
     borderRadius: dialPadSize / 2,
   },
   dialPadText: {
     fontSize: dialPadTextSize,
+    color: _colors.secondaryColor,
   },
 });
