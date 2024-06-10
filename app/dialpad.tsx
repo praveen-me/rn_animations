@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
+  ListRenderItem,
 } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -39,6 +40,24 @@ interface IDialPadProps {
   onPress: (item: (typeof dialpad)[number]) => void;
 }
 
+function RenderItem({
+  item,
+  onPress,
+}: {
+  item: ListRenderItem<string | number>;
+  onPress: (item: (typeof dialpad)[number]) => void;
+}) {
+  return (
+    <TouchableOpacity
+      style={styles.dialBtn}
+      onPress={() => onPress(item)}
+      disabled={!item}
+    >
+      <Text style={styles.dialPadText}>{item}</Text>
+    </TouchableOpacity>
+  );
+}
+
 function DialPad(props: IDialPadProps) {
   return (
     <FlatList
@@ -48,27 +67,27 @@ function DialPad(props: IDialPadProps) {
       columnWrapperStyle={{ gap: _spacing }}
       contentContainerStyle={{ gap: _spacing }}
       scrollEnabled={false}
-      renderItem={({ item }) => (
-        <TouchableOpacity
-          disabled={item === ""}
-          onPress={() => {
-            props.onPress(item);
-          }}
-        >
-          <View style={[styles.dialBtn, { borderWidth: item === "" ? 0 : 1 }]}>
-            {item === "del" ? (
-              <Ionicons
-                name="backspace-outline"
-                size={dialPadTextSize}
-                color={_colors.secondaryColor}
-              />
-            ) : (
-              <Text style={styles.dialPadText}>{item}</Text>
-            )}
-          </View>
-        </TouchableOpacity>
-      )}
+      renderItem={RenderItem}
       keyExtractor={(item, index) => index.toString()}
+    />
+  );
+}
+
+interface IRenderPinProps {
+  selected: boolean;
+}
+function RenderPin(props: IRenderPinProps) {
+  return (
+    <MotiView
+      style={styles.pin}
+      animate={{
+        height: props.selected ? pinSize : 2,
+        backgroundColor: props.selected
+          ? _colors.secondaryColor
+          : `${_colors.secondaryColor}66`,
+        marginBottom: props.selected ? pinSize / 2 : 0,
+      }}
+      transition={{ type: "timing", duration: 200 }}
     />
   );
 }
@@ -85,8 +104,6 @@ export default function DialPadContainer() {
     }
   };
 
-  console.log({ code });
-
   return (
     <SafeAreaView style={styles.container}>
       <View
@@ -99,19 +116,7 @@ export default function DialPadContainer() {
         }}
       >
         {[...Array(4)].map((_, i) => (
-          <MotiView
-            key={`pin-${i}`}
-            style={{
-              width: pinSize,
-              height: pinSize,
-              borderRadius: pinSize,
-              backgroundColor: _colors.secondaryColor,
-            }}
-            animate={{
-              height: code[i] ? pinSize : 2,
-            }}
-            transition={{ type: "timing", duration: 200 }}
-          />
+          <RenderPin key={`pin-${i}`} selected={Boolean(code[i])} />
         ))}
       </View>
       <DialPad onPress={handleDialPress} />
@@ -137,5 +142,11 @@ const styles = StyleSheet.create({
   dialPadText: {
     fontSize: dialPadTextSize,
     color: _colors.secondaryColor,
+  },
+  pin: {
+    width: pinSize,
+    height: pinSize,
+    borderRadius: pinSize,
+    backgroundColor: _colors.secondaryColor,
   },
 });
